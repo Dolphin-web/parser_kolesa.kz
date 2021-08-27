@@ -5,19 +5,22 @@ import unicodedata
 from bs4 import BeautifulSoup 
 import operator
 
-URL = 'https://kolesa.kz/cars/'
+URL = 'https://kolesa.kz/cars/' 
 HEADERS = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36','accept': '*/*'}
 HOST = 'https://kolesa.kz/'
 FILE = str(os.path.abspath(os.getcwd())) + '/file.json'
 
 def get_html(url, params=None):
+#получение html структуры сайта
 	r = requests.get(url, headers=HEADERS, params=params)
 	return r
 
 def get_pages_count(html):
+# колличество страниц для парсинга
 	return int(5)
 
 def get_content(html):
+#получение данных объявления
 	soup = BeautifulSoup(html, 'html.parser')
 	items = soup.find_all('div', class_='a-elem')
 	cars = []
@@ -32,6 +35,7 @@ def get_content(html):
 	return cars
 
 def save_file(items, path):
+#сохранение в формате json с поддержкой кириллицы
 	with open(path, 'w', encoding ='utf-8', newline='') as file:
 		json.dump(items, file, sort_keys=False, indent=3, ensure_ascii=False, separators=(',', ': '))
 
